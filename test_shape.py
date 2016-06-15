@@ -16,10 +16,18 @@ def test_shape():
     print 'flatten to 1-d array:'
     print flat_vec_val
 
-    x_mat_2_t3 = T.reshape(x_flat_2_mat, T.shape(x))
-    x_mat_2_vec = T.reshape(x_flat_2_mat, T.shape(x_flat_2_vec))
-    reshape_f = theano.function([x], [x_mat_2_t3, x_mat_2_vec])
-    mat_2_t3_val, mat_2_vec_val = reshape_f(tensor3_val)
+    x_mat = T.matrix()
+    x_mat_2_t3 = T.reshape(x_mat, (2, 2, 2))
+    x_mat_2_vec = T.reshape(x_mat, (8,))
+    reshape_f = theano.function([x_mat], [x_mat_2_t3, x_mat_2_vec])
+    """
+    t3_shape = T.lvector()
+    vec_shape = T.lvector()
+    x_mat_2_t3 = T.reshape(x_mat, t3_shape, 3)
+    x_mat_2_vec = T.reshape(x_mat, vec_shape, 1)
+    reshape_f = theano.function([x_mat, t3_shape, vec_shape], [x_mat_2_t3, x_mat_2_vec])
+    """
+    mat_2_t3_val, mat_2_vec_val = reshape_f(flat_mat_val)
     print 'reshape 2-d array to 3-d array:'
     print mat_2_t3_val
     print 'reshape 2-d array to 1-d array:'
